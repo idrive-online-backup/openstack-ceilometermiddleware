@@ -401,8 +401,9 @@ class Swift(object):
             'get': 'storage.objects.get.count',
             'post': 'storage.objects.post.count',
             'put': 'storage.objects.put.count',
+            'copy': 'storage.objects.copy.count',
             'delete': 'storage.objects.delete.count',
-            'head': 'storage.objects.head.count',
+            'head': 'storage.objects.head.count'
         }
         return request_metric_names.get(method, None)
 
