@@ -366,7 +366,7 @@ class Swift(object):
                     name='storage.objects.outgoing.bytes', unit='B')))
 
         # api call
-        request_metric_name = Swift.get_request_metric_name(method.lower())
+        request_metric_name = self.get_request_metric_name(method.lower())
         if request_metric_name:
             event.add_measurement(cadf_measurement.Measurement(
                 result=1,
