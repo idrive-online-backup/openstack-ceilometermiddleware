@@ -365,6 +365,14 @@ class Swift(object):
                 metric=cadf_metric.Metric(
                     name='storage.objects.outgoing.bytes', unit='B')))
 
+        # api call
+        request_metric_name = self.get_request_metric_name(method.lower())
+        if request_metric_name:
+            event.add_measurement(cadf_measurement.Measurement(
+                result=1,
+                metric=cadf_metric.Metric(
+                    name=request_metric_name, unit='request')))
+
         if self.nonblocking_notify:
             try:
                 Swift.event_queue.put(event, False)
@@ -386,6 +394,18 @@ class Swift(object):
     @staticmethod
     def send_notification(notifier, event):
         notifier.info({}, 'objectstore.http.request', event.as_dict())
+
+    @staticmethod
+    def get_request_metric_name(method):
+        request_metric_names = {
+            'get': 'storage.objects.get.count',
+            'post': 'storage.objects.post.count',
+            'put': 'storage.objects.put.count',
+            'copy': 'storage.objects.copy.count',
+            'delete': 'storage.objects.delete.count',
+            'head': 'storage.objects.head.count'
+        }
+        return request_metric_names.get(method, None)
 
 
 class SendEventThread(threading.Thread):
