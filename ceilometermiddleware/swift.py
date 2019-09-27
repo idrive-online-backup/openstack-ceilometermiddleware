@@ -334,9 +334,14 @@ class Swift(object):
                     header.upper())
 
         # build object store details
-        target = cadf_resource.Resource(
-            typeURI='service/storage/object',
-            id=account.partition(self.reseller_prefix)[2] or path)
+        if self.reseller_prefix:
+            target = cadf_resource.Resource(
+                typeURI='service/storage/object',
+                id=account.partition(self.reseller_prefix)[2] or path)
+        else:
+            target = cadf_resource.Resource(
+                typeURI='service/storage/object',
+                id=account)
         target.metadata = resource_metadata
         target.action = method.lower()
 
